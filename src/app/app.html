@@ -1,0 +1,13 @@
+<h2>Daftar Menu Aplikasi (Table Menu)</h2>
+
+<ul>
+  <li *ngFor="let menu of menuList">
+    <strong>{{ menu.menu_name }}</strong> (URL: {{ menu.url_menu }})
+
+    <ul *ngIf="menu.children && menu.children.length > 0">
+      <li *ngFor="let sub of menu.children">
+        {{ sub.menu_name }} - <a [href]="sub.url_menu">{{ sub.url_menu }}</a>
+      </li>
+    </ul>
+  </li>
+</ul>

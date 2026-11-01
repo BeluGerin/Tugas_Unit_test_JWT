@@ -5,11 +5,12 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Menu, MenuService } from './menu.service';
 import { AuthService } from './auth.service';
+import { MasterDetailComponent } from './master-detail.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, MasterDetailComponent],
   template: `
     <div class="main-layout">
       <!-- SIDEBAR -->
@@ -123,6 +124,11 @@ import { AuthService } from './auth.service';
               </tr>
             </tbody>
           </table>
+        </div>
+
+        <!-- MASTER DETAIL -->
+        <div *ngIf="activePage === 'Master Detail'">
+          <app-master-detail></app-master-detail>
         </div>
 
         <!-- SETTINGS -->

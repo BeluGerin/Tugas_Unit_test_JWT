@@ -6,11 +6,12 @@ import { Observable } from 'rxjs';
 import { Menu, MenuService } from './menu.service';
 import { AuthService } from './auth.service';
 import { MasterDetailComponent } from './master-detail.component';
+import { CascadeDropdown } from './cascade-dropdown/cascade-dropdown';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule, MasterDetailComponent],
+  imports: [CommonModule, FormsModule, MasterDetailComponent, CascadeDropdown],
   template: `
     <div class="main-layout">
       <!-- SIDEBAR -->
@@ -129,6 +130,11 @@ import { MasterDetailComponent } from './master-detail.component';
         <!-- MASTER DETAIL -->
         <div *ngIf="activePage === 'Master Detail'">
           <app-master-detail></app-master-detail>
+        </div>
+
+        <!-- SAMPLE DROPDOWN CASCADE -->
+        <div *ngIf="activePage === 'Sample Dropdown Cascade'">
+          <app-cascade-dropdown></app-cascade-dropdown>
         </div>
 
         <!-- SETTINGS -->

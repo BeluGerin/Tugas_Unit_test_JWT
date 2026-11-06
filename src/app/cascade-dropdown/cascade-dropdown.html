@@ -1,0 +1,122 @@
+<header class="page-head">
+  <p class="crumb">Contoh Form</p>
+  <h1>Sample Dropdown List Cascade</h1>
+</header>
+
+<section class="card">
+  <h2>{{ editId() === null ? 'Alamat Anda' : 'Edit Alamat' }}</h2>
+
+  <div class="row">
+    <label>Provinsi</label>
+    <select [ngModel]="provinsi()" (ngModelChange)="onProvinsi($event)">
+      <option [ngValue]="null">-- Pilih List --</option>
+      @for (p of provinsiList(); track p.id) {
+        <option [ngValue]="p.id">{{ p.nama }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="row">
+    <label>Kabupaten</label>
+    <select [disabled]="!provinsi()" [ngModel]="kabupaten()" (ngModelChange)="onKabupaten($event)">
+      <option [ngValue]="null">-- Pilih List --</option>
+      @for (k of kabupatenList(); track k.id) {
+        <option [ngValue]="k.id">{{ k.nama }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="row">
+    <label>Kecamatan</label>
+    <select [disabled]="!kabupaten()" [ngModel]="kecamatan()" (ngModelChange)="kecamatan.set($event)">
+      <option [ngValue]="null">-- Pilih List --</option>
+      @for (c of kecamatanList(); track c.id) {
+        <option [ngValue]="c.id">{{ c.nama }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="preview">Address: <strong>{{ preview() }}</strong></div>
+
+  <div class="aksi-form">
+    <button class="btn" (click)="simpan()">{{ editId() === null ? 'Save Address' : 'Update' }}</button>
+    @if (editId() !== null) {
+      <button class="btn-batal" (click)="batalEdit()">Batal</button>
+    }
+  </div>
+
+  @if (pesan()) {
+    <p class="pesan">{{ pesan() }}</p>
+  }
+</section>
+
+<section class="card">
+  <div class="head">
+    <h2>Daftar Alamat Tersimpan</h2>
+    <input
+      class="cari"
+      type="search"
+      placeholder="Cari provinsi, kabupaten, kecamatan, atau alamat..."
+      [value]="q()"
+      (input)="onCari($any($event.target).value)" />
+  </div>
+
+  <div class="bulk">
+    <label class="checkall">
+      <input type="checkbox" [checked]="allChecked()" (change)="toggleAll($any($event.target).checked)" />
+      Check All
+    </label>
+    <button class="btn-del" [disabled]="selected().size === 0" (click)="hapusTerpilih()">
+      Hapus Terpilih ({{ selected().size }})
+    </button>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th></th>
+        <th>No</th>
+        <th>Provinsi</th>
+        <th>Kabupaten</th>
+        <th>Kecamatan</th>
+        <th>Alamat</th>
+        <th>Aksi</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (a of rows(); track a.id) {
+        <tr>
+          <td>
+            <input type="checkbox" [checked]="selected().has(a.id)" (change)="toggle(a.id)" />
+          </td>
+          <td>{{ a.id }}</td>
+          <td>{{ a.provinsi }}</td>
+          <td>{{ a.kabupaten }}</td>
+          <td>{{ a.kecamatan }}</td>
+          <td><code>{{ a.alamat }}</code></td>
+          <td>
+            <button class="btn-edit" (click)="edit(a)">Edit</button>
+            <button class="btn-del" (click)="hapusSatu(a.id)">Hapus</button>
+          </td>
+        </tr>
+      } @empty {
+        <tr><td colspan="7" class="kosong">
+          {{ q() ? 'Tidak ada alamat yang cocok dengan pencarian.' : 'Belum ada alamat tersimpan.' }}
+        </td></tr>
+      }
+    </tbody>
+  </table>
+
+  <div class="pager-wrap">
+    <span class="info">
+      Halaman {{ page() }} dari {{ totalPages() }} (total {{ total() }} alamat)
+    </span>
+    <nav class="pager">
+      <button (click)="prev()" [disabled]="page() === 1">‹ Prev</button>
+      @for (n of pages(); track n) {
+        <button [class.aktif]="n === page()" (click)="goTo(n)">{{ n }}</button>
+      }
+      <button (click)="next()" [disabled]="page() === totalPages()">Next ›</button>
+    </nav>
+  </div>
+</section>
